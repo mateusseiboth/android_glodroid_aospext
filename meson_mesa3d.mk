@@ -102,7 +102,7 @@ AOSPEXT_GEN_TARGETS += lib:$(MESA_LIBGBM_NAME).so::$(MESA_LIBGBM_NAME):
 AOSPEXT_GEN_TARGETS += lib:gbm/dri_gbm.so::dri_gbm:
 endif
 
-ifneq ($(BOARD_MESA3D_GALLIUM_VA),)
+ifeq ($(BOARD_MESA3D_GALLIUM_VA),enabled)
 ifeq ($(shell expr $(MESA3D_VERSION) \<= 24.2), 1)
 AOSPEXT_GEN_TARGETS += lib:libgallium_drv_video.so:$(MESA3D_GALLIUM_LIBDIR):libgallium_drv_video:
 endif
@@ -174,7 +174,7 @@ MESON_LLVM_VERSION := $(LLVM_VERSION_MAJOR).$(LLVM_VERSION_MINOR).$(LLVM_VERSION
 LOCAL_SHARED_LIBRARIES += libLLVM$(LLVM_VERSION_MAJOR)
 endif
 
-ifneq ($(BOARD_MESA3D_GALLIUM_VA),)
+ifeq ($(BOARD_MESA3D_GALLIUM_VA),enabled)
 LIBVA_DIR := hardware/intel/common/libva
 LIBVA_VERSION_MAJOR := $(shell sed -n -e 's/va_api_major_version *= *//p' $(LIBVA_DIR)/meson.build)
 LIBVA_VERSION_MINOR := $(shell sed -n -e 's/va_api_minor_version *= *//p' $(LIBVA_DIR)/meson.build)
@@ -229,7 +229,7 @@ $(SYMLINKS_TARGET_VIDEO): MESA3D_LIB_INSTALL_DIR:=$(dir $(AOSPEXT_INTERNAL_BUILD
 $(SYMLINKS_TARGET_VIDEO): $(AOSPEXT_INTERNAL_BUILD_TARGET)
 	# Create Symlinks
 	mkdir -p $$(dir $$@)
-ifneq ($(strip $(BOARD_MESA3D_GALLIUM_VA)),)
+ifeq ($(strip $(BOARD_MESA3D_GALLIUM_VA)),enabled)
 	find $$(MESA3D_LIB_INSTALL_DIR)/dri -name \*_drv_video.so -printf '%f\n' | PATH=/usr/bin:$$PATH xargs -I{} ln -s -f $$(if $(shell expr $(MESA3D_VERSION) \>= 24.3),libgallium_dri, libgallium_drv_video).so $$(dir $$@)/{}
 ifeq ($(shell expr $(MESA3D_VERSION) \<= 24.2), 1)
 	cp `find $$(MESA3D_LIB_INSTALL_DIR)/dri -name \*_drv_video.so | head -1` $$(MESA3D_LIB_INSTALL_DIR)/libgallium_drv_video.so
