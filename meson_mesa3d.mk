@@ -70,7 +70,7 @@ MESON_BUILD_ARGUMENTS := \
     -Dandroid-libbacktrace=disabled                                              \
 	-Dgallium-va=$(BOARD_MESA3D_GALLIUM_VA)					    				 \
 	-Dvideo-codecs=$(subst $(space),$(comma),$(BOARD_MESA3D_VIDEO_CODECS))	 \
-	-Dxmlconfig=enabled															 \
+	-Dxmlconfig=$(or $(BOARD_MESA3D_XMLCONFIG),disabled)															 \
     $(BOARD_MESA3D_EXTRA_MESON_ARGS)                                             \
     $(BOARD_MESA3D_MESON_ARGS)
 

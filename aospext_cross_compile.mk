@@ -48,7 +48,7 @@ $(AOSPEXT_INTERNAL_BUILD_TARGET): MESON_RUST_TARGET  := $(subst arm64,aarch64,$(
 endif
 
 $(AOSPEXT_INTERNAL_BUILD_TARGET): MESON_BUILD_ARGUMENTS:=--prefix /vendor --libdir lib$(LIBDIR_SUFFIX) --datadir etc/shared --libexecdir bin \
-                                                         --sbindir bin --localstatedir=/mnt/var --buildtype=debug $(MESON_BUILD_ARGUMENTS)
+                                                         --sbindir bin --localstatedir=/mnt/var --buildtype=$(or $(AOSPEXT_MESON_BUILDTYPE),release) $(MESON_BUILD_ARGUMENTS)
 
 # cargo
 $(AOSPEXT_INTERNAL_BUILD_TARGET): CARGO_RUST_TARGET  := $(subst arm64,aarch64,$(TARGET_$(AOSPEXT_ARCH_PREFIX)ARCH))-linux-android
