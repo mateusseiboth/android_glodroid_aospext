@@ -139,9 +139,13 @@ LOCAL_SHARED_LIBRARIES += libdrm_intel
 AOSPEXT_GEN_PKGCONFIGS += libdrm_intel:$(LIBDRM_VERSION)
 endif
 
+# Since Mesa 25 radeonsi can compile every shader with ACO; BOARD_MESA3D_AMD_USE_LLVM := false builds
+# it without LLVM (pass -Damd-use-llvm=false in BOARD_MESA3D_MESON_ARGS too).
 ifneq ($(filter radeonsi,$(BOARD_MESA3D_GALLIUM_DRIVERS)),)
+ifneq ($(BOARD_MESA3D_AMD_USE_LLVM),false)
 MESON_GEN_LLVM_STUB := true
 LOCAL_CFLAGS += -DFORCE_BUILD_AMDGPU   # instructs LLVM to declare LLVMInitializeAMDGPU* functions
+endif
 endif
 
 ifneq ($(filter radeonsi amd,$(BOARD_MESA3D_GALLIUM_DRIVERS) $(BOARD_MESA3D_VULKAN_DRIVERS)),)
