@@ -99,7 +99,8 @@ endif
 
 ifneq ($(filter true, $(BOARD_MESA3D_BUILD_LIBGBM)),)
 AOSPEXT_GEN_TARGETS += lib:$(MESA_LIBGBM_NAME).so::$(MESA_LIBGBM_NAME):
-AOSPEXT_GEN_TARGETS += lib:gbm/dri_gbm.so::dri_gbm:
+# libgbm looks for its backend in <libdir>/gbm (GBM_BACKENDS_PATH), so dri_gbm.so goes there.
+AOSPEXT_GEN_TARGETS += lib:gbm/dri_gbm.so:gbm:dri_gbm:
 endif
 
 ifeq ($(BOARD_MESA3D_GALLIUM_VA),enabled)
